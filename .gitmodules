@@ -1,0 +1,6 @@
+[submodule "vendor-contract-mgmt-client"]
+	path = vendor-contract-mgmt-client
+	url = https://github.com/Cwagne17/vendor-contract-mgmt-client.git
+[submodule "vendor-contract-mgmt-service"]
+	path = vendor-contract-mgmt-service
+	url = https://github.com/Cwagne17/vendor-contract-mgmt-service.git
