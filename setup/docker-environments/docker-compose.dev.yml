@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  dev-postgres:
+    image: postgres
+    restart: always
+    env_file:
+      - ../environment-variables/.db.dev.env
+    ports:
+      - '5432:5432'
+  
+  dev-pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - ../environment-variables/.db.dev.env
+    ports:
+      - '80:80'
+
+  vendor-contract-mgmt-client:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ../../vendor-contract-mgmt-client
+    ports:
+      - "4200:4200"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4200"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+  vendor-contract-mgmt-service:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ../../vendor-contract-mgmt-service
+    environment:
+      - ENV_TYPE=development
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../environment-variables/.vcms.dev.env
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
